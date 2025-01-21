@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> </title>
+    <link rel="stylesheet" href="./css/order.css" />
+  </head>
+  <style>
+    [v-cloak] {
+      display: none !important;
+    }
+  </style>
+  <body>
+    <div id="app" v-cloak :class="theme">
+      <div class="order">
+        <div class="header">
+			<div class="left">
+				<img src="../../../static/image/return.png" @click="goback" />
+			</div>
+          <div class="fixed">{{transwords[lang].order}}</div>
+        </div>
+        <div class="content" style="padding-top: 44px">
+          <div class="tab">
+            <ul>
+              <li :class="active==1?'active':''" @click="setActive(1)">
+                {{transwords[lang].inTransaction}}
+              </li>
+              <li :class="active==3?'active':''" @click="setActive(3)">
+                {{transwords[lang].closed}}
+              </li>
+            </ul>
+            <!-- 交易中 -->
+            <div>
+              <div class="item" v-if="active==1" v-for="(item,index) in list" :key="index">
+                <div class="item-top">
+                  <span class="type">{{transwords[lang].inTransaction}}</span>
+                  <img src="image/top.png" alt="" v-if="item.ploss>=0" />
+                  <img src="image/bottom.png" alt="" v-else />
+                  <p>{{item.symbol_name}} {{secondsFormat(item.seconds)}}</p>
+                </div>
+                <div class="item-center" @click="showDesc(item)">
+                  <p>
+                    <span>{{transwords[lang].quantity}}</span>
+                    <span>{{parseInt(item.number)}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].puprice}}</span>
+                    <span>{{item.open_price}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].cuPrice}}</span>
+                    <span>{{price||0.0000}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].profitLoss}}</span>
+                    <span>{{item.ploss | tofixedFour}}</span>
+                  </p>
+                </div>
+                 <div class="item-center top">
+                    <p style="text-align: left;">
+                      <span>{{transwords[lang].Countdown}}</span>
+                      <span style="display:block;">{{secondsFormat(item.remain_milli_seconds||0)}}</span>
+                    </p>
+                 </div>
+               
+              </div>
+              <!-- 已平仓 -->
+              <div class="item" v-else-if="active==3" @click="showDesc(item)">
+                <div class="item-top">
+                  <span class="type">{{transwords[lang].closed}}</span>
+                  <img
+                    src="image/top.png"
+                    alt=""
+                    v-if="item.fact_profits>=0"
+                  />
+                  <img src="image/bottom.png" alt="" v-else />
+                  <p>{{item.symbol_name}} {{secondsFormat(item.seconds||0)}}</p>
+                </div>
+                <div class="item-center">
+                  <p>
+                    <span>{{transwords[lang].quantity}}</span>
+                    <span>{{parseInt(item.number)}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].puprice}}</span>
+                    <span>{{item.open_price}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].fiprice}}</span>
+                    <span>{{item.end_price}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].fee}}</span>
+                    <span>{{item.fee}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].loss}}</span>
+                    <span>{{item.fact_profits}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="loading">
+              <div v-show="isScroll">
+                <img src="image/loading.gif" alt="" />
+                <span>{{transwords[lang].loading}}</span>
+              </div>
+              <div v-show="list.length>0 && !isScroll">
+                <span>{{transwords[lang].noMore}}</span>
+              </div>
+            </div>
+            <div class="loading" v-show="list.length<1 && show">
+              <span>{{transwords[lang].nodata}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-show="showInfo" style="position: fixed;top:0px;bottom:0;right:0;left:0;background: #0000008f;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+        <div style="position: relative;background: white;width:86%;padding: 40px 20px 20px;border-radius: 10px;">
+          <img @click.stop="closeDesc()" style="width:30px;position: absolute;top: 6px;right:10px" src="data:image/png;base64,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" />
+          <template v-if="active==3">
+            <div style="display: flex;justify-content: space-between;">
+              <span>{{info.symbol_name}} </span>
+              <span>{{secondsFormat(info.seconds||0)}}</span>
+            </div>
+            <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+              <span>{{transwords[lang].quantity}}</span>
+              <span>{{parseInt(info.number)}}</span>
+            </div>
+            <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+              <span>{{transwords[lang].puprice}}</span>
+              <span>{{info.open_price}}</span>
+            </div>
+            <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+              <span>{{transwords[lang].fiprice}}</span>
+              <span>{{info.end_price}}</span>
+            </div>
+            <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+              <span>{{transwords[lang].fee}}</span>
+              <span>{{info.fee}}</span>
+            </div>
+            <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+              <span>{{info.fact_profits>=0? transwords[lang].yl:transwords[lang].kuisun}}</span>
+              <span>{{info.fact_profits>=0?'+':''}} {{info.fact_profits}}</span>
+            </div>
+          </template>
+          <template v-if="active==1">
+            <div style="display: flex;justify-content: space-between;">
+              <div>
+                <span>{{info.symbol_name}}</span>
+                <span>{{secondsFormat(info.seconds)}}</span>
+              </div>
+            </div>
+              <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+                <span>{{transwords[lang].quantity}}</span>
+                <span>{{parseInt(info.number)}}</span>
+              </div>
+              <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+                <span>{{transwords[lang].puprice}}</span>
+                <span>{{info.open_price}}</span>
+              </div>
+              <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+                <span>{{transwords[lang].cuPrice}}</span>
+                <span>{{price||0.0000}}</span>
+              </div>
+              <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+                <span>{{transwords[lang].profitLoss}}</span>
+                <span>{{info.ploss | tofixedFour}}</span>
+              </div>
+             <div style="display: flex;justify-content: space-between;margin-top: 10px;">
+                  <span>{{transwords[lang].Countdown}}</span>
+                  <span style="display:block;">{{secondsFormat(info.remain_milli_seconds||0)}}</span>
+             </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../lib/jquery.js"></script>
+  <script src="../lib/layer_mobile/layer.js"></script>
+  <script src="../javascripts/main.js"></script>
+  <script src="../lib/vue.min.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      filters: {
+        tofixedFour: function (val) {
+          if (val >= 0) {
+            val = val.toFixed(4)
+          } else if (val < 0) {
+            val = '-' + (val * -1).toFixed(4)
+          }
+          return val
+        },
+      },
+      data() {
+        return {
+          active: 1,
+          isWs: true,
+          list: [],
+          show: false,
+          set: null,
+		  websockUrl: `wss://${_DOMAIN.replace(/^https?\:\/\//i, "")}/ws`,
+          socket: '',
+          heartbeat: null,
+          currentIndex: 0,
+          currencyList: [],
+          currencyObj: {},
+          price: '',
+          lang: '',
+          symbol: '',
+          isScroll: true,
+          pageSize: {
+            limit: 10,
+            page: 1,
+          },
+          info:{},
+          showInfo:false,
+          transwords: {
+            spa:{
+              "order": "Orden de transacción",
+              "inTransaction": "En el comercio",
+              "closed": "Posición de cierre",
+              "quantity": "Cantidad",
+              "puprice": "Precio de compra",
+              "cuPrice": "Precio actual",
+              "profitLoss": "Pérdidas y ganancias previstas",
+              "Countdown": "Cuenta atrás",
+              "fiprice": "Precio de transacción",
+              "fee": "Gastos de tramitación",
+              "loss": "Ganancias y pérdidas",
+              "loading": "Cargar...",
+              "nodata": "No hay datos",
+              "noMore": "No más",
+              "tian": "Día",
+              "shi": "Horas",
+              "fenz": "Minutos",
+              "miao": "Segundo",
+              "yl": "Rentabilidad",
+	"kuisun": "Ruptura de la deficiencia"
+            },
+            zh: {
+              order: '交易订单',
+              inTransaction: '交易中',
+              closed: '已平仓',
+              quantity: '数量',
+              puprice: '购买价',
+              cuPrice: '当前价',
+              profitLoss: '预计盈亏',
+              Countdown: '倒计时',
+              fiprice: '成交价',
+              fee: '手续费',
+              loss: '盈亏',
+              loading: '正在加载...',
+              nodata: '暂无数据',
+              noMore: '没有更多了',
+              tian:'天',
+              shi:'小时',
+              fenz:'分钟',
+              miao:'秒'
+            },
+            en: {
+              order: 'Trading order',
+              inTransaction: 'In transaction',
+              closed: 'Closed position',
+              quantity: 'Quantity',
+              puprice: 'Purchase Price',
+              cuPrice: 'Current price',
+              profitLoss: 'Expected profit and loss',
+              Countdown: 'Countdown',
+              fiprice: 'Transaction price',
+              fee: 'Handling fee',
+              loss: 'Profit and loss',
+              loading: 'Loading...',
+              nodata: 'No data',
+              noMore: 'No more',
+              tian:'day',
+              shi:'hour',
+              fenz:'minute',
+              miao:'second',
+              "yl": "Profit",
+	"kuisun": "Deficiency breaking"
+            },
+            hk: {
+              order: '交易訂單',
+              inTransaction: '交易中',
+              closed: '已平倉',
+              quantity: '數量',
+              puprice: '購買價',
+              cuPrice: '當前價',
+              profitLoss: '預計盈虧',
+              Countdown: '倒計時',
+              fiprice: '成交價',
+              fee: '手續費',
+              loss: '盈虧',
+              loading: '正在加載...',
+              nodata: '暫無數據',
+              noMore: '沒有更多了',
+              tian:'天',
+              shi:'小時',
+              fenz:'分鐘',
+              miao:'秒',
+              yl:'盈利',
+              kuisun:'虧損'
+            },
+            jp: {
+              order: '取引順序',
+              inTransaction: 'トランザクション中',
+              closed: '閉まっている',
+              quantity: '数量',
+              puprice: '購入金額',
+              cuPrice: '現在の価格',
+              profitLoss: '推定損益',
+              Countdown: '秒読み',
+              fiprice: '最終価格',
+              fee: '手数料',
+              loss: '利益と損失',
+              loading: '読み込み中...',
+              nodata: 'データなし',
+              noMore: 'もういや',
+              tian:'日',
+              shi:'時間',
+              fenz:'分',
+              miao:'秒',
+              "yl": "利益",
+	"kuisun": "損をする"
+            },
+            kr: {
+              order : '거래 주문',
+               inTransaction : '거래 중',
+               closed : '폐쇄 포지션',
+               quantity : '수량',
+               puprice : '구매 가격',
+               cuPrice : '현재 가격',
+               profitLoss : '예상 손익',
+               Countdown : '카운트 다운',
+               fiprice : '거래 가격',
+               fee : '취급 수수료',
+               loss : '이익과 손실',
+               loading : '로드 중 ...',
+               nodata : '일시적으로 데이터 없음',
+               noMore : '더 이상',
+              tian:'일',
+              shi:'시',
+              fenz:'분',
+              miao:'둘째',
+              "yl": "이윤",
+	"kuisun": "손해를 보다"
+            },
+            vn: {
+              order: 'Lệnh giao dịch',
+              inTransaction: 'trong giao dịch',
+              closed: 'Đã đóng cửa',
+              quantity: 'Định lượng',
+              puprice: 'Giá mua',
+              cuPrice: 'Giá hiện tại',
+              profitLoss: 'Lợi nhuận và lỗ ước tính',
+              Countdown: 'Đếm ngược',
+              fiprice: 'giá niêm yết',
+              fee: 'Phí xử lý',
+              loss: 'Lợi nhuận và thua lỗ',
+              loading: 'Đang tải...',
+              nodata: 'Không có dữ liệu',
+              noMore: 'Không còn nữa',
+              tian:'ngày',
+              shi:'giờ',
+              fenz:'phút',
+              miao:'thứ hai',
+              "yl": "lợi nhuận",
+	"kuisun": "Vi phạm"
+            },
+			theme: 'light'
+          },
+        }
+      },
+      methods: {
+        showDesc(item){
+          this.info = item
+          this.showInfo = true
+        },
+        closeDesc(){
+          this.showInfo = false
+        },
+        secondsFormat(s) { 
+          var day = Math.floor( s/ (24*3600) ); // Math.floor()向下取整 
+          var hour = Math.floor( (s - day*24*3600) / 3600); 
+          var minute = Math.floor( (s - day*24*3600 - hour*3600) /60 ); 
+          var second = s - day*24*3600 - hour*3600 - minute*60; 
+          let d = day > 0 ? day + this.transwords[this.lang].tian :'';
+          let h = hour > 0 ? hour + this.transwords[this.lang].shi:'';
+          let m = minute > 0 ? minute + this.transwords[this.lang].fenz : '';
+          let se = second > 0 ? second + this.transwords[this.lang].miao : '';
+          return  d + h + m + se
+      },
+        // 添加上拉事件触发
+        setScroll() {
+          //距离底部50px触发上拉事件
+          window.onscroll = () => {
+            if (
+              this.getScrollTop() + this.getClientHeight() ===
+                this.getScrollHeight() &&
+              this.isScroll
+            ) {
+              console.log('上拉加载了')
+              // 发起ajax请求
+              this.pageSize.page++
+              this.getList(this.active)
+            }
+          }
+        },
+        // 获取当前可视范围的高度
+        getClientHeight() {
+          let clientHeight =
+            document.documentElement.clientHeight || document.body.clientHeight
+          return clientHeight
+        },
+        // 获取文档完整的高度
+        getScrollHeight() {
+          let scrollHeight =
+            document.documentElement.scrollHeight || document.body.scrollHeight
+          return scrollHeight
+        },
+        // 获取滚动条当前的位置
+        getScrollTop() {
+          let scrollTop =
+            document.documentElement.scrollTop || document.body.scrollTop
+          return scrollTop
+        },
+        goback() {
+          if (this.socket) {
+            this.socket.close()
+          }
+
+          if (window.plus) {
+            uni.navigateBack({
+              delta: 1,
+            })
+            console.log(111111)
+          } else {
+            history.back(-1)
+            console.log(222222)
+          }
+        },
+        setActive(val) {
+          this.pageSize.page = 1
+          this.isScroll = true
+          this.list = []
+          this.active = val
+          this.getList(val)
+        },
+        getList(val) {
+          if (this.set != null) {
+            clearInterval(this.set)
+          }
+          this.show = false
+          let obj = get_all_params()
+          this.symbol = obj.symbol
+          initDataToken(
+            {
+              url: 'microtrade/lists',
+              data: {
+                match_id: obj.currency_match_id,
+                status: val || 1, //为1 交易中  为3 已平仓  默认为交易中
+                ...this.pageSize,
+              },
+            },
+            (res) => {
+              this.show = true
+              for (var i = 0; i < res.data.length; i++) {
+                res.data[i].remain_milli_seconds = parseInt(
+                  Number(res.data[i].remain_milli_seconds) / 1000
+                )
+                this.list.push(res.data[i])
+              }
+              if (this.list.length >= res.total) {
+                console.log(this.list.length)
+                console.log(res.total)
+                this.isScroll = false
+              }
+              this.set = setInterval(() => {
+                for (let i = 0; i < res.data.length; i++) {
+                  if (res.data[i].remain_milli_seconds <= 0) {
+                    res.data[i].remain_milli_seconds = 0
+                  } else {
+                    res.data[i].remain_milli_seconds--
+                  }
+                }
+              }, 1000)
+
+              if (this.active == 1 && this.list.length > 0 && this.isWs) {
+                this.getData()
+                this.isWs = false
+              }
+            }
+          )
+        },
+        //获取币种
+        getCurrency() {
+          initDataToken(
+            {
+              url: 'market/currency_matches',
+            },
+            (res) => {
+              this.currencyList = res.filter(
+                (item) => item.is_quote == 1 && item.code == 'USDT'
+              )
+            }
+          )
+        },
+        //ws socket
+        getData() {
+          let that = this
+          let tokens = null
+          that.socket = new WebSocket(that.websockUrl)
+          let socket = that.socket
+
+          if (window.plus) {
+            tokens = plus.storage.getItem('token')
+          } else {
+            tokens = localStorage.getItem('token')
+          }
+          let data = [
+            { type: 'login', params: tokens },
+            { type: 'sub', params: 'DAY_MARKET' },
+            { type: 'sub', params: 'MICRO_CLOSED' },
+            { type: 'sub', params: 'GLOBAL_TX.' + that.symbol },
+          ]
+          socket.onopen = function () {
+            console.log('socket已连接')
+            //清除定时器
+            clearInterval(this.heartbeat)
+
+            //send参数
+            for (let key in data) {
+              socket.send(JSON.stringify(data[key]))
+            }
+
+            //发送心跳
+
+            socket.send('ping')
+            this.heartbeat = setInterval(() => {
+              socket.send('ping')
+            }, 5000)
+          }
+          socket.onmessage = function (msg) {
+            let data = JSON.parse(msg.data)
+            if (that.currencyList.length > 0) {
+              if (data.type == 'GLOBAL_TX') {
+                console.log(data.completes[0].price)
+                that.price = data.completes[0].price
+              }
+              //获取当前币种实时价格
+              //     let datas = that.currencyList[that.currentIndex].matches;
+              //     datas.forEach((item, index) => {
+              //         if (item.currency_quotation.currency_match_id == data.currency_match_id) {
+              //         that.currencyList[that.currentIndex].matches[
+              //             index
+              //         ].currency_quotation.change = data.quotation.change;
+              //         that.currencyList[that.currentIndex].matches[
+              //             index
+              //         ].currency_quotation.close = data.quotation.close;
+              //         }
+              //     });
+              //     //判断页面显示当前那种币种
+              //    let currencys=that.currencyList[that.currentIndex].matches
+              //    let parmas =get_all_params()
+              //    for(let key in currencys){
+              //         if(currencys[key].id==parmas.currency_match_id){
+              //             that.currencyObj=currencys[key].currency_quotation
+              //         }
+              //    }
+            }
+
+            if (data.type == 'MICRO_CLOSED') {
+              for (let i = 0; i < that.list.length; i++) {
+                if (that.list[i].id == data.order.id) {
+                  that.list[i] = data.order
+                  setTimeout(function () {
+                    let arr = that.list
+                    arr.splice(i, 1)
+                    that.list = arr
+                  }, 500)
+                  return false
+                }
+              }
+            }
+            //计算预计盈亏
+            for (var i = 0; i < that.list.length; i++) {
+              let buy = that.list[i].open_price //购买价
+              let current = that.price //当前价
+              if (current > buy) {
+                that.list[i].ploss =
+                  that.list[i].number * that.list[i].profit_ratio
+              } else if (current < buy) {
+                that.list[i].ploss = that.list[i].number * -1
+              } else {
+                that.list[i].ploss = 0
+              }
+            }
+          }
+        },
+      },
+      created() {
+        let that = this;
+        if (window.plus) {
+          that.lang = plus.storage.getItem('lang') || 'zh'
+		  this.theme = plus.storage.getItem('theme')
+        } else {
+          // that.lang = JSON.parse(localStorage.getItem('lang')).data;
+          that.lang = localStorage.getItem('lang') || 'zh'
+		  this.theme = localStorage.getItem('theme')
+        }
+        this.getList()
+        this.getCurrency()
+        this.setScroll()
+      },
+    })
+  </script>
+</html>

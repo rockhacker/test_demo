@@ -1,0 +1,19 @@
+<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic/33/mention">
+<mask id="mask0_136_1387" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="33" height="33">
+<rect id="Rectangle 149" width="33" height="33" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_136_1387)">
+<g id="Group 67">
+<path id="Rectangle 143" d="M29 18.5V14C29 11.2386 26.7614 9 24 9H9C6.23858 9 4 11.2386 4 14V23C4 25.7614 6.23858 28 9 28H16.5" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<path id="Rectangle 145" d="M8.00001 9.00017L19.1271 5.16312C20.9184 4.54541 22.8459 5.63688 23.2376 7.49078V7.49078" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<path id="Rectangle 144" d="M4 16H10.5C11.8807 16 13 17.1193 13 18.5V18.5C13 19.8807 11.8807 21 10.5 21H4V16Z" stroke="#E8EDF4" stroke-width="2"/>
+<path id="Vector 10" d="M19.9995 25.0546L28.4371 25.0704" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<g id="Group 65">
+<path id="Vector 11" d="M25.7859 22L29 25.2141" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<path id="Vector 12" d="M25.7858 28.4282L28.9999 25.2141" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</g>
+</svg>

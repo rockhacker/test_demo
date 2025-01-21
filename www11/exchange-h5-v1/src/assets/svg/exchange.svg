@@ -1,0 +1,20 @@
+<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic/33/exchange">
+<mask id="mask0_136_1378" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="33" height="33">
+<rect id="Rectangle 147" width="33" height="33" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_136_1378)">
+<g id="Group 72">
+<path id="Ellipse 26" d="M29 16.5C29 23.4036 23.4036 29 16.5 29C12.9655 29 9.77359 27.533 7.49999 25.1747M3.99999 16.5C3.99999 9.59644 9.59643 4 16.5 4C19.7826 4 22.7696 5.2653 25 7.33477" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="Group 65">
+<path id="Vector 11" d="M26 4L26 8.54545" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<path id="Vector 12" d="M21.4545 8.54541H26" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+</g>
+<g id="Group 70">
+<path id="Vector 11_2" d="M5.99999 28L5.99999 23.4545" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<path id="Vector 12_2" d="M10.5454 23.4546L5.99999 23.4546" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</g>
+</svg>

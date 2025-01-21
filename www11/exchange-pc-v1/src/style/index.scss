@@ -1,0 +1,142 @@
+* {
+  --el-menu-bg-color: transparent;
+  --el-menu-hover-bg-color: transparent;
+  --el-menu-text-color: white;
+  --el-menu-hover-text-color: #19fc8f;
+  --el-menu-active-color: #19fc8f;
+  --el-bg-color-overlay: #161616;
+  --el-border-color-light: #161616;
+  --el-input-height: 40px;
+  // --el-input-text-color: #161616;
+  --el-checkbox-checked-bg-color: #19fc8f;
+  --el-checkbox-checked-input-border-color: #19fc8f;
+  --el-checkbox-checked-text-color: #606266;
+  --el-color-primary: #19fc8f;
+  --el-text-color-primary: #888888;
+
+  --klinecharts-pro-border-color: #1d1e1e;
+
+  --el-input-bg-color: #1d1e1e;
+  --el-input-border-color: #363636;
+
+  --el-slider-runway-bg-color: white;
+
+  --el-bg-color-overlay: #1d1e1e;
+
+  --el-menu-horizontal-sub-item-height: 60px;
+}
+
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("../assets/fonts/Poppins-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-Medium";
+  src: url("../assets/fonts/Poppins-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-Bold";
+  src: url("../assets/fonts/Poppins-Bold.ttf");
+}
+
+html,
+body,
+#app {
+  font-family: "Poppins-Regular" !important;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #161616;
+  color: white;
+}
+
+input {
+  outline: none;
+}
+
+// 隐藏掉输入框中的上下箭头
+/* chrome */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+/* 火狐浏览器 */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.element::-webkit-scrollbar {
+  width: 0 !important;
+}
+/*IE 10+*/
+.element {
+  -ms-overflow-style: none;
+}
+/*Firefox*/
+.element {
+  overflow: -moz-scrollbars-none;
+}
+
+.el-dialog__close {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.el-dialog__body {
+  padding-top: 10px;
+}
+
+.ant-notification {
+  z-index: 99999999999 !important;
+}
+
+.text-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// .el-form-item__label {
+//   color: #161616 !important;
+// }
+
+// .el-input__inner {
+//   color: #161616 !important;
+// }
+
+.klinecharts-pro-setting-modal-content {
+  color: #000 !important;
+}
+
+.klinecharts-pro-modal {
+  z-index: 9999999999 !important;
+}
+
+.klinecharts-pro-period-bar {
+  height: 52px !important;
+}
+
+.klinecharts-pro-period-bar,
+.klinecharts-pro-drawing-bar {
+  background-color: #1d1e1e;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition-delay: 111111s;
+  -webkit-transition: color 11111s ease-out, background-color 111111s ease-out;
+}

@@ -1,0 +1,13 @@
+module.exports = {
+  configureWebpack: (config) => {
+    // 开启分离js
+    config.optimization = {
+      splitChunks: {
+        chunks: "all",
+        minSize: 1000,
+        maxInitialRequests: Infinity,
+        maxSize: 1000 * 50, //1000是1kb
+      },
+    };
+  },
+};

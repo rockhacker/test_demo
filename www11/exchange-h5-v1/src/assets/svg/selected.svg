@@ -1,0 +1,10 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic/32/option">
+<mask id="mask0_158_1421" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+<rect id="Rectangle 140" width="32" height="32" rx="4" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_158_1421)">
+<path id="Vector 9" d="M8 15.104L13.9858 20.8081L24.1616 11.1111" stroke="#9FEF4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</svg>

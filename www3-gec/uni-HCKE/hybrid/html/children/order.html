@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> </title>
+    <link rel="stylesheet" href="./css/order.css" />
+  </head>
+  <style>
+    [v-cloak] {
+      display: none !important;
+    }
+  </style>
+  <body>
+    <div id="app" v-cloak :class="theme">
+      <div class="order">
+        <div class="header">
+			<div class="left">
+				<img src="../../../static/image/return.png" @click="goback" />
+			</div>
+          <div class="fixed">{{transwords[lang].order}}</div>
+        </div>
+        <div class="content">
+          <div class="tab">
+            <ul>
+              <li :class="active==1?'active':''" @click="setActive(1)">
+                {{transwords[lang].inTransaction}}
+              </li>
+              <li :class="active==3?'active':''" @click="setActive(3)">
+                {{transwords[lang].closed}}
+              </li>
+            </ul>
+            <!-- 交易中 -->
+            <div>
+              <div class="item" v-if="active==1" v-for="(item,index) in list" :key="index">
+                <div class="item-top">
+                  <span class="type">{{transwords[lang].inTransaction}}</span>
+                  <img src="./image/top.png" alt="" v-if="item.ploss>=0" />
+                  <img src="./image/bottom.png" alt="" v-else />
+                  <p>{{item.symbol_name}} {{secondsFormat(item.seconds)}}</p>
+                </div>
+                <div class="item-center">
+                  <p>
+                    <span>{{transwords[lang].quantity}}</span>
+                    <span>{{parseInt(item.number)}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].puprice}}</span>
+                    <span>{{item.open_price}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].cuPrice}}</span>
+                    <span>{{price||0.0000}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].profitLoss}}</span>
+                    <span>{{item.ploss | tofixedFour}}</span>
+                  </p>
+                </div>
+                 <div class="item-center top">
+                    <p style="text-align: left;">
+                      <span>{{transwords[lang].Countdown}}</span>
+                      <span style="display:block;">{{secondsFormat(item.remain_milli_seconds||0)}}</span>
+                    </p>
+                 </div>
+               
+              </div>
+              <!-- 已平仓 -->
+              <div class="item" v-else-if="active==3">
+                <div class="item-top">
+                  <span class="type">{{transwords[lang].closed}}</span>
+                  <img
+                    src="children/image/top.png"
+                    alt=""
+                    v-if="item.fact_profits>=0"
+                  />
+                  <img src="children/image/bottom.png" alt="" v-else />
+                  <p>{{item.symbol_name}} {{secondsFormat(item.seconds||0)}}</p>
+                </div>
+                <div class="item-center">
+                  <p>
+                    <span>{{transwords[lang].quantity}}</span>
+                    <span>{{parseInt(item.number)}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].puprice}}</span>
+                    <span>{{item.open_price}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].fiprice}}</span>
+                    <span>{{item.end_price}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].fee}}</span>
+                    <span>{{item.fee}}</span>
+                  </p>
+                  <p>
+                    <span>{{transwords[lang].loss}}</span>
+                    <span>{{item.fact_profits}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="loading">
+              <div v-show="isScroll">
+                <img src="children/image/loading.gif" alt="" />
+                <span>{{transwords[lang].loading}}</span>
+              </div>
+              <div v-show="list.length>0 && !isScroll">
+                <span>{{transwords[lang].noMore}}</span>
+              </div>
+            </div>
+            <div class="loading" v-show="list.length<1 && show">
+              <span>{{transwords[lang].nodata}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../lib/jquery.js"></script>
+  <script src="../lib/layer_mobile/layer.js"></script>
+  <script src="../javascripts/main.js"></script>
+  <script src="../lib/vue.min.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      filters: {
+        tofixedFour: function (val) {
+          if (val >= 0) {
+            val = val.toFixed(4)
+          } else if (val < 0) {
+            val = '-' + (val * -1).toFixed(4)
+          }
+          return val
+        },
+      },
+      data() {
+        return {
+          active: 1,
+          isWs: true,
+          list: [],
+          show: false,
+          set: null,
+		  websockUrl: `wss://${_DOMAIN.replace(/^https?\:\/\//i, "")}/ws`,
+          socket: '',
+          heartbeat: null,
+          currentIndex: 0,
+          currencyList: [],
+          currencyObj: {},
+          price: '',
+          lang: '',
+          symbol: '',
+          isScroll: true,
+          pageSize: {
+            limit: 10,
+            page: 1,
+          },
+          transwords: {
+            zh: {
+              order: '交易订单',
+              inTransaction: '交易中',
+              closed: '已平仓',
+              quantity: '数量',
+              puprice: '购买价',
+              cuPrice: '当前价',
+              profitLoss: '预计盈亏',
+              Countdown: '倒计时',
+              fiprice: '成交价',
+              fee: '手续费',
+              loss: '盈亏',
+              loading: '正在加载...',
+              nodata: '暂无数据',
+              noMore: '没有更多了',
+              tian:'天',
+              shi:'小时',
+              fenz:'分钟',
+              miao:'秒'
+            },
+            en: {
+              order: 'Trading order',
+              inTransaction: 'In transaction',
+              closed: 'Closed position',
+              quantity: 'Quantity',
+              puprice: 'Purchase Price',
+              cuPrice: 'Current price',
+              profitLoss: 'Expected profit and loss',
+              Countdown: 'Countdown',
+              fiprice: 'Transaction price',
+              fee: 'Handling fee',
+              loss: 'Profit and loss',
+              loading: 'Loading...',
+              nodata: 'No data',
+              noMore: 'No more',
+              tian:'day',
+              shi:'hour',
+              fenz:'minute',
+              miao:'second'
+            },
+            hk: {
+              order: '交易訂單',
+              inTransaction: '交易中',
+              closed: '已平倉',
+              quantity: '數量',
+              puprice: '購買價',
+              cuPrice: '當前價',
+              profitLoss: '預計盈虧',
+              Countdown: '倒計時',
+              fiprice: '成交價',
+              fee: '手續費',
+              loss: '盈虧',
+              loading: '正在加載...',
+              nodata: '暫無數據',
+              noMore: '沒有更多了',
+              tian:'天',
+              shi:'小時',
+              fenz:'分鐘',
+              miao:'秒'
+            },
+            jp: {
+              order: '取引順序',
+              inTransaction: 'トランザクション中',
+              closed: '閉まっている',
+              quantity: '数量',
+              puprice: '購入金額',
+              cuPrice: '現在の価格',
+              profitLoss: '推定損益',
+              Countdown: '秒読み',
+              fiprice: '最終価格',
+              fee: '手数料',
+              loss: '利益と損失',
+              loading: '読み込み中...',
+              nodata: 'データなし',
+              noMore: 'もういや',
+              tian:'日',
+              shi:'時間',
+              fenz:'分',
+              miao:'秒'
+            },
+            kr: {
+              order : '거래 주문',
+               inTransaction : '거래 중',
+               closed : '폐쇄 포지션',
+               quantity : '수량',
+               puprice : '구매 가격',
+               cuPrice : '현재 가격',
+               profitLoss : '예상 손익',
+               Countdown : '카운트 다운',
+               fiprice : '거래 가격',
+               fee : '취급 수수료',
+               loss : '이익과 손실',
+               loading : '로드 중 ...',
+               nodata : '일시적으로 데이터 없음',
+               noMore : '더 이상',
+              tian:'일',
+              shi:'시',
+              fenz:'분',
+              miao:'둘째'
+            },
+            vn: {
+              order: 'Lệnh giao dịch',
+              inTransaction: 'Trong giao dịch',
+              closed: 'Đã đóng cửa',
+              quantity: 'Định lượng',
+              puprice: 'Giá mua',
+              cuPrice: 'Giá hiện tại',
+              profitLoss: 'Lợi nhuận và lỗ ước tính',
+              Countdown: 'Đếm ngược',
+              fiprice: 'giá niêm yết',
+              fee: 'Phí xử lý',
+              loss: 'Lợi nhuận và thua lỗ',
+              loading: 'Đang tải...',
+              nodata: 'Không có dữ liệu',
+              noMore: 'Không còn nữa',
+              tian:'ngày',
+              shi:'giờ',
+              fenz:'phút',
+              miao:'Giây'
+            },
+			theme: 'dark'
+          },
+        }
+      },
+      methods: {
+        secondsFormat(s) { 
+          var day = Math.floor( s/ (24*3600) ); // Math.floor()向下取整 
+          var hour = Math.floor( (s - day*24*3600) / 3600); 
+          var minute = Math.floor( (s - day*24*3600 - hour*3600) /60 ); 
+          var second = s - day*24*3600 - hour*3600 - minute*60; 
+          let d = day > 0 ? day + this.transwords[this.lang].tian :'';
+          let h = hour > 0 ? hour + this.transwords[this.lang].shi:'';
+          let m = minute > 0 ? minute + this.transwords[this.lang].fenz : '';
+          let se = second > 0 ? second + this.transwords[this.lang].miao : '';
+          return  d + h + m + se
+      },
+        // 添加上拉事件触发
+        setScroll() {
+          //距离底部50px触发上拉事件
+          window.onscroll = () => {
+            if (
+              this.getScrollTop() + this.getClientHeight() ===
+                this.getScrollHeight() &&
+              this.isScroll
+            ) {
+              console.log('上拉加载了')
+              // 发起ajax请求
+              this.pageSize.page++
+              this.getList(this.active)
+            }
+          }
+        },
+        // 获取当前可视范围的高度
+        getClientHeight() {
+          let clientHeight =
+            document.documentElement.clientHeight || document.body.clientHeight
+          return clientHeight
+        },
+        // 获取文档完整的高度
+        getScrollHeight() {
+          let scrollHeight =
+            document.documentElement.scrollHeight || document.body.scrollHeight
+          return scrollHeight
+        },
+        // 获取滚动条当前的位置
+        getScrollTop() {
+          let scrollTop =
+            document.documentElement.scrollTop || document.body.scrollTop
+          return scrollTop
+        },
+        goback() {
+          if (this.socket) {
+            this.socket.close()
+          }
+
+          if (window.plus) {
+            uni.navigateBack({
+              delta: 1,
+            })
+            console.log(111111)
+          } else {
+            history.back(-1)
+            console.log(222222)
+          }
+        },
+        setActive(val) {
+          this.pageSize.page = 1
+          this.isScroll = true
+          this.list = []
+          this.active = val
+          this.getList(val)
+        },
+        getList(val) {
+          if (this.set != null) {
+            clearInterval(this.set)
+          }
+          this.show = false
+          let obj = get_all_params()
+          this.symbol = obj.symbol
+          initDataToken(
+            {
+              url: 'microtrade/lists',
+              data: {
+                match_id: obj.currency_match_id,
+                status: val || 1, //为1 交易中  为3 已平仓  默认为交易中
+                ...this.pageSize,
+              },
+            },
+            (res) => {
+              this.show = true
+              for (var i = 0; i < res.data.length; i++) {
+                res.data[i].remain_milli_seconds = parseInt(
+                  Number(res.data[i].remain_milli_seconds) / 1000
+                )
+                this.list.push(res.data[i])
+              }
+              if (this.list.length >= res.total) {
+                console.log(this.list.length)
+                console.log(res.total)
+                this.isScroll = false
+              }
+              this.set = setInterval(() => {
+                for (let i = 0; i < res.data.length; i++) {
+                  if (res.data[i].remain_milli_seconds <= 0) {
+                    res.data[i].remain_milli_seconds = 0
+                  } else {
+                    res.data[i].remain_milli_seconds--
+                  }
+                }
+              }, 1000)
+
+              if (this.active == 1 && this.list.length > 0 && this.isWs) {
+                this.getData()
+                this.isWs = false
+              }
+            }
+          )
+        },
+        //获取币种
+        getCurrency() {
+          initDataToken(
+            {
+              url: 'market/currency_matches',
+            },
+            (res) => {
+              this.currencyList = res.filter(
+                (item) => item.is_quote == 1 && item.code == 'USDT'
+              )
+            }
+          )
+        },
+        //ws socket
+        getData() {
+          let that = this
+          let tokens = null
+          that.socket = new WebSocket(that.websockUrl)
+          let socket = that.socket
+
+          if (window.plus) {
+            tokens = plus.storage.getItem('token')
+          } else {
+            tokens = localStorage.getItem('token')
+          }
+          let data = [
+            { type: 'login', params: tokens },
+            { type: 'sub', params: 'DAY_MARKET' },
+            { type: 'sub', params: 'MICRO_CLOSED' },
+            { type: 'sub', params: 'GLOBAL_TX.' + that.symbol },
+          ]
+          socket.onopen = function () {
+            console.log('socket已连接')
+            //清除定时器
+            clearInterval(this.heartbeat)
+
+            //send参数
+            for (let key in data) {
+              socket.send(JSON.stringify(data[key]))
+            }
+
+            //发送心跳
+
+            socket.send('ping')
+            this.heartbeat = setInterval(() => {
+              socket.send('ping')
+            }, 5000)
+          }
+          socket.onmessage = function (msg) {
+            let data = JSON.parse(msg.data)
+            if (that.currencyList.length > 0) {
+              if (data.type == 'GLOBAL_TX') {
+                console.log(data.completes[0].price)
+                that.price = data.completes[0].price
+              }
+              //获取当前币种实时价格
+              //     let datas = that.currencyList[that.currentIndex].matches;
+              //     datas.forEach((item, index) => {
+              //         if (item.currency_quotation.currency_match_id == data.currency_match_id) {
+              //         that.currencyList[that.currentIndex].matches[
+              //             index
+              //         ].currency_quotation.change = data.quotation.change;
+              //         that.currencyList[that.currentIndex].matches[
+              //             index
+              //         ].currency_quotation.close = data.quotation.close;
+              //         }
+              //     });
+              //     //判断页面显示当前那种币种
+              //    let currencys=that.currencyList[that.currentIndex].matches
+              //    let parmas =get_all_params()
+              //    for(let key in currencys){
+              //         if(currencys[key].id==parmas.currency_match_id){
+              //             that.currencyObj=currencys[key].currency_quotation
+              //         }
+              //    }
+            }
+
+            if (data.type == 'MICRO_CLOSED') {
+              for (let i = 0; i < that.list.length; i++) {
+                if (that.list[i].id == data.order.id) {
+                  that.list[i] = data.order
+                  setTimeout(function () {
+                    let arr = that.list
+                    arr.splice(i, 1)
+                    that.list = arr
+                  }, 500)
+                  return false
+                }
+              }
+            }
+            //计算预计盈亏
+            for (var i = 0; i < that.list.length; i++) {
+              let buy = that.list[i].open_price //购买价
+              let current = that.price //当前价
+              if (current > buy) {
+                that.list[i].ploss =
+                  that.list[i].number * that.list[i].profit_ratio
+              } else if (current < buy) {
+                that.list[i].ploss = that.list[i].number * -1
+              } else {
+                that.list[i].ploss = 0
+              }
+            }
+          }
+        },
+      },
+      created() {
+        let that = this;
+        if (window.plus) {
+          that.lang = plus.storage.getItem('lang') || 'zh'
+		  // this.theme = plus.storage.getItem('theme')
+        } else {
+          // that.lang = JSON.parse(localStorage.getItem('lang')).data;
+          that.lang = localStorage.getItem('lang') || 'zh'
+		  // this.theme = localStorage.getItem('theme')
+        }
+        this.getList()
+        this.getCurrency()
+        this.setScroll()
+      },
+    })
+  </script>
+</html>

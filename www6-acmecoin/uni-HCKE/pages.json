@@ -1,0 +1,540 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/home/home",
+			"style": {
+				"app-plus" : {
+				    "titleNView" : false,
+					"bounce":"none",
+					"pullToRefresh":{
+						"offset":"75px",
+						"style":"circle"
+					}
+				},
+				"enablePullDownRefresh":false
+			}
+			
+		},//proje
+		{
+			"path": "pages/mine/login",
+			"style" : {
+			    "navigationStyle" : "custom",
+				"backgroundColor": "#102030",
+				"enablePullDownRefresh":true,
+			   "app-plus" : {
+			       "titleNView" : false,
+					"bounce":"none",
+					"pullToRefresh":{
+						"offset":"55px",
+						"style":"circle"
+					}
+			   }
+			}
+			// "style": {
+			// 	"navigationBarTitleText": "登录",
+			// 	"backgroundColor": "#102030"trade
+			// }
+		},
+		{
+			"path": "pages/trade/trade",
+			"style": {
+				"navigationStyle" : "custom",
+				"backgroundColor": "#102030",
+				"enablePullDownRefresh":true,
+				"app-plus" : {
+				    "titleNView" : false,
+					"bounce":"none",
+					"pullToRefresh":{
+						"offset":"55px",
+						"style":"circle"
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/trade/deal",
+			"style" : {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/trade/entrust",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/lever/lever",
+			"style" : {
+			    "navigationStyle" : "custom",
+				"backgroundColor": "#102030",
+				"enablePullDownRefresh":true,
+			   "app-plus" : {
+			       "titleNView" : false,
+					"bounce":"none",
+					"pullToRefresh":{
+						"offset":"55px",
+						"style":"circle"
+					}
+			   }
+			}
+		},
+		{
+			"path": "pages/lever/leverList",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/lever/orderList",
+			"style" : {
+				"backgroundColor": "#102030",
+			    "app-plus" : {
+					"titleNView" : false
+				}
+			}
+		},
+		{
+			"path": "pages/legal/legal"
+		},
+		{
+			"path": "pages/legal/store"
+		},
+		{
+			"path": "pages/legal/storeDetail",
+			"style" : {
+			    "navigationStyle" : "custom",
+				"backgroundColor": "#0b53bd",
+			    "app-plus" : {
+			        "titleNView" : false
+					
+			    }
+			}
+		},
+		{
+			"path": "pages/legal/storeOrder",
+			"style" : {
+			    "navigationStyle" : "custom",
+				"backgroundColor": "#0b53bd",
+			    "app-plus" : {
+			        "titleNView" : false
+					
+			    }
+			}
+		},
+		{
+			"path": "pages/legal/orderDetail",
+			"style" : {
+			    "navigationStyle" : "custom",
+				"backgroundColor": "#0b53bd",
+			    "app-plus" : {
+			        "titleNView" : false
+					
+			    }
+			}
+		},
+		{
+			"path": "pages/legal/order",
+			"style" : {
+			    "navigationStyle" : "custom",
+				"backgroundColor": "#0b53bd",
+			    "app-plus" : {
+			        "titleNView" : false
+					
+			    }
+			}
+		},
+		{
+			"path": "pages/legal/recordlist",
+			"style" : {
+			    "navigationStyle" : "custom",
+				"backgroundColor": "#0b53bd",
+			    "app-plus" : {
+			        "titleNView" : false
+					
+			    }
+			}
+		},
+		{
+			"path": "pages/mine/register"
+		},
+		{
+			"path": "pages/mine/setPwd"
+		},
+		{
+			"path": "pages/mine/modifyPwd"
+		},
+		{
+			"path": "pages/mine/withdraw"
+		},
+		{
+			"path": "pages/mine/exchange"
+		},
+		{
+			"path": "pages/market/market",
+			"style": {
+				"enablePullDownRefresh":true,
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+			"path": "pages/market/order",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/market/kline",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/contract/kline",
+			"style": {
+				"navigationBarBackgroundColor":"#102030",
+				"navigationBarTextStyle":"black",
+				"navigationStyle" : "custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+			"path": "pages/contract/lever",
+			"style": {
+				"navigationBarBackgroundColor":"#102030",
+				"navigationBarTextStyle":"black",
+				"navigationStyle" : "custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+			"path": "pages/staking/index",
+			"style": {
+				"navigationBarBackgroundColor":"#102030",
+				"navigationBarTextStyle":"black",
+				"navigationStyle" : "custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+			"path": "pages/staking/describle"
+		},
+		{
+			"path": "pages/staking/details"
+		},
+		{
+			"path": "pages/staking/orders"
+		},
+		{
+			"path": "pages/staking/income"
+		},
+		{
+			"path": "pages/subscription/index",
+			"style": {
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+			"path": "pages/subscription/details",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/subscription/orders"
+		},
+		{
+			"path": "pages/market/second",
+			"style": {
+				"navigationBarBackgroundColor":"#102030",
+				"navigationBarTextStyle":"black",
+				"navigationStyle" : "custom",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+			"path": "pages/home/news"
+		},
+		{
+			"path": "pages/optionc/optionc",
+			"style": {
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+			"path": "pages/home/newsDetail"
+		},
+		{
+			"path": "pages/home/chat"
+		},
+		{
+			"path": "pages/home/recharge",
+			"style": {
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/home/rechargeOpen",
+			"style": {
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTextStyle":"black"
+			}
+		},
+		{
+			"path": "pages/home/agreement"
+		},
+		{
+			"path": "pages/mine/forgetPwd"
+		},
+		{
+			"path": "pages/mine/forgetPwdNext"
+		},
+		{
+			"path": "pages/assets/assets",
+			"style": {
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+				"path": "pages/mine/mine",
+			"style": {
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
+			"path": "pages/mine/userCenter"
+		},
+		{
+			"path": "pages/mine/authentication"
+		},
+		{
+			"path": "pages/assets/tradeAccount",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/home/web"
+		},
+		{
+			"path": "pages/assets/subscriptionRunning",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/assets/charge"
+		},
+		{
+			"path": "pages/assets/mention",
+			"style": {
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+            "path" : "pages/home/rechargeTransfer",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationBarTextStyle":"white"
+            }
+            
+        },
+		{
+			"path": "pages/mine/collect_money"  
+		},
+		{
+			"path": "pages/home/notice"  
+		},
+		{
+			"path": "pages/mine/wallet"
+		},
+		{
+			"path": "pages/mine/wallet-tip"
+		},
+		{
+			"path": "pages/home/noticeDetail"  
+		},
+		{
+			"path": "pages/mine/collect"  
+		},
+		{
+			"path": "pages/assets/bindMentionAddress"  
+		},
+		{
+			"path": "pages/mine/invite"
+		},
+		{
+			"path": "pages/mine/security"
+		},
+		{
+			"path": "pages/mine/resetLegalPwd"
+		},
+		{
+			"path": "pages/mine/modifyPwdNext"
+		},
+		{
+			"path": "pages/mine/real_authentication"
+		},
+		{
+			"path": "pages/mine/about"
+		},
+		{
+			"path": "pages/mine/transfer"
+		},
+		
+		{
+			"path": "pages/mine/accountRecord"
+		},
+		{
+			"path": "pages/mine/helpCenter"
+		},
+		{
+			"path": "pages/mine/helpCentent"
+		},
+		{
+			"path": "pages/mine/policy"
+		},
+		{
+			"path": "pages/assets/transfer"
+		},
+		{
+			"path": "pages/assets/transferTolever"
+		},
+		{
+			"path": "pages/mine/authorization_code"
+		},
+		{
+			"path": "pages/mine/whitePaper"
+		},
+		{
+			"path": "pages/mine/workOrder",
+			"style": {
+				"app-plus" : {
+				    "titleNView" : false,
+					"bounce":"none",
+					"pullToRefresh":{
+						"offset":"75px",
+						"style":"circle"
+					}
+				},
+				"enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/mine/record",
+			"enablePullDownRefresh":true
+		},
+		{
+			"path": "pages/legal/apply",
+			"style": {
+				// "enablePullDownRefresh":true
+			}
+		},
+		{
+			"path": "pages/home/buy",
+			"style": {
+				// "enablePullDownRefresh":true
+			}
+		}
+		,
+		{
+			"path": "pages/home/proje"
+		},
+		{
+			"path": "pages/home/projeDetail",
+			"style": {
+				// "enablePullDownRefresh":true
+			}
+		}//projeDetail
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "TEST",
+		"navigationBarBackgroundColor": "#102030",
+		"backgroundColorTop":"#102030",
+		 "backgroundColor": "#ffffff",
+		"backgroundTextStyle":"dark"
+	},
+	"tabBar":{
+		"color" : "#96A1C2",
+		"selectedColor" : "#E5A013",
+		// "borderStyle" : "#eeeeee",
+		"backgroundColor" : "#1C2532",
+		"list" : [
+			{
+				"pagePath" : "pages/home/home",
+				"iconPath" : "static/footer/index0.png",
+				"selectedIconPath" : "static/footer/index1.png",
+				"text": ""
+			},
+		
+			{
+				"pagePath" : "pages/market/market",
+				"iconPath" : "static/footer/hang0.png",
+				"selectedIconPath" : "static/footer/hang1.png",
+				"text": ""
+			},
+			{
+				"pagePath" : "pages/trade/trade",
+				"iconPath" : "static/footer/trade0.png",
+				"selectedIconPath" : "static/footer/trade1.png",
+				"text": "币币"
+			},
+			{
+				"pagePath" : "pages/contract/lever",
+				"iconPath" : "static/footer/gang0.png",
+				"selectedIconPath" : "static/footer/gang1.png",
+				"text": ""
+			},
+			// {
+			// 	"pagePath" : "pages/optionc/optionc",
+			// 	"iconPath" : "static/footer/gang0.png",
+			// 	"selectedIconPath" : "static/footer/gang1.png",
+			// 	"text": ""
+			// },
+			{
+				"pagePath" : "pages/assets/assets",
+				"iconPath" : "static/footer/mine0.png",
+				"selectedIconPath" : "static/footer/mine1.png",
+				"text": ""
+			},
+			{
+				"pagePath" : "pages/mine/mine",
+				"iconPath" : "static/footer/me2.png",
+				"selectedIconPath" : "static/footer/me0.png",
+				"text": ""
+			}
+		]
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	}
+}

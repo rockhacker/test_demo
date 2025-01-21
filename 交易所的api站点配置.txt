@@ -1,0 +1,54 @@
+location /feature
+    {
+        proxy_pass http://127.0.0.1:9999;
+        proxy_http_version 1.1;
+        proxy_read_timeout 360s;   
+        proxy_redirect off;
+        proxy_set_header Host $host; #如果是负载均衡就去掉行首的注释
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location /ws
+    {
+        proxy_pass http://127.0.0.1:8884;
+        proxy_http_version 1.1;
+        proxy_read_timeout 360s;
+        proxy_redirect off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host; #如果是负载均衡就去掉行首的注释
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+location /v1/api
+    {
+        proxy_pass http://127.0.0.1:5566;
+        proxy_http_version 1.1;
+        proxy_read_timeout 360s;   
+        proxy_redirect off;
+        proxy_set_header Host $host; #如果是负载均衡就去掉行首的注释
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+     location /v1/ws
+    {
+        proxy_pass http://127.0.0.1:5566;
+        proxy_http_version 1.1;
+        proxy_read_timeout 360s;   
+        proxy_redirect off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host; #如果是负载均衡就去掉行首的注释
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+if ($request_uri ~* ".php") {
+      return 509;
+    }
+
+单服务器的api 配置是用这个

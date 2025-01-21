@@ -1,0 +1,50 @@
+.my2{
+  /*background: none;不能删*/
+}
+.chart-page .chart-container{
+	border: none;
+	background: none;
+}
+.layout__area--top,
+.layout__area--center{
+	border-top:1px solid #333;
+}
+.header-group-properties{
+  float: right;
+}
+.header-group-indicators{
+  float: right;
+}
+.header-chart-panel .header-group-fullscreen{
+  float: right;
+  /* display: none; */
+}
+.bottom-widgetbar-content.backtesting .button, .header-chart-panel .button{
+  /*width: 20px;*/
+  padding: 7px 5px;
+  border: none;
+  background: none;
+  /*height: 30px;*/
+  /*line-height: 15px;*/
+  color: #999;
+}
+.header-chart-panel .button.mydate{
+  color: #37b6ff;
+  border-bottom: 1px solid #37b6ff;
+}
+.feature-touch .header-chart-panel .button:active{
+	background:none;
+}
+.js-rootresizer__contents{
+  background:#111111;
+}
+.pane-legend-line.pane-legend-wrap.study,
+.control-bar-wrapper,
+.pane-controls,
+.pane-legend-line .pane-legend-icon-container,
+.pane-legend .pane-legend-minbtn.apply-common-tooltip.apply{
+  display: none;
+}
+.header-chart-panel-content>.left>.group:nth-last-child(1){
+  display: inline-block;
+}

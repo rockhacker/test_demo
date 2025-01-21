@@ -1,0 +1,17 @@
+<svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic/33/deposit">
+<mask id="mask0_136_1391" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="33" height="33">
+<rect id="Rectangle 150" width="33" height="33" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_136_1391)">
+<g id="Group 66">
+<path id="Ellipse 25" d="M29 16.5C29 23.4036 23.4036 29 16.5 29C9.59644 29 4 23.4036 4 16.5C4 9.59644 9.59644 4 16.5 4" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<path id="Vector 10" d="M29 4L17.1466 16.053" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<g id="Group 65">
+<path id="Vector 11" d="M16.8788 12.0352L16.8788 16.5806" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+<path id="Vector 12" d="M21.4242 16.5806H16.8788" stroke="#E8EDF4" stroke-width="2" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</g>
+</svg>

@@ -1,0 +1,137 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+.order {
+  background: #111111;
+  width: 100%;
+  min-height: 100vh;
+  color: #fff;
+  padding-bottom: 10px;
+}
+
+.order .header {
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  height: 50px;
+  background: #111111;
+  top: 0;
+}
+
+.order .header .fixed {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.order .header .fixed::after {
+  display: block;
+  content: '';
+}
+
+.order .header .left {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.order .header .left img {
+  width: 22px;
+  height: 22px;
+}
+
+.order .content .tab ul {
+  display: flex;
+  margin-bottom: 20px;
+  width: 90%;
+  margin: 0 auto 10px;
+}
+
+.order .content .tab ul li {
+  height: 40px;
+  line-height: 40px;
+  margin-right: 20px;
+}
+
+.order .content .tab ul li.active {
+  color: #357ce1;
+  border-bottom: 2px solid #357ce1;
+}
+
+.order .content .tab .item {
+  background: #272727;
+  width: 90%;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.order .content .tab .item .item-top {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.order .content .tab .item .item-top img {
+  width: 10px;
+  height: 12px;
+  margin: 0 10px;
+}
+
+.order .content .tab .item .item-top span, .order .content .tab .item .item-top p {
+  font-size: 13px;
+}
+
+.order .content .tab .item .item-top .type {
+  color: #52db72;
+}
+
+.order .content .tab .item .item-center {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order .content .tab .item .item-center p {
+  text-align: center;
+  line-height: 20px;
+}
+
+.order .content .tab .item .item-center p span {
+  font-size: 12px;
+  /* color: #999; */
+  color: white;
+  display: block;
+}
+.item-center.top{
+  margin-top:10px;
+}
+.order .loading, .order .loading > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+}
+
+.order .loading img, .order .loading > div img {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+.order .loading span, .order .loading > div span {
+  font-size: 12px;
+  color: #999;
+}

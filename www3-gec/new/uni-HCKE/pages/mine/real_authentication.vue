@@ -1,0 +1,194 @@
+<template>
+  <view :class="theme">
+    <view v-if="authStatus == 0" class="px-30 mt-20" style="min-height: calc(100vh - 40px);">
+	<view class="flex items-center bg-my-gray rounded-lg px-20 mb-20">
+		<text class="text-lg">{{ $t("home.zjlx") }}：</text>
+		<!-- <input disabled type="text" v-model="name" class="flex-1 h-100 pr-20 text-lg text-right" :placeholder="$t('home.qxzzjlx')"/> -->
+		<picker :value="index1" :range="accountList1" class="flex-1 pr-20 h-80 text-right" @change="bindPickerChange1" range-key="name">
+			<view class=" lh40 ft14" v-if="index1===''"  style="color:#999;">{{$t('home.qxzzjlx') }}</view>
+			<view class=" lh40 ft14" v-else>{{ accountList1[index1].name }}</view>
+		</picker>
+	</view>
+      <view class="flex items-center bg-my-gray rounded-lg px-20 mb-20">
+        <text class="text-lg">{{ $t("authentication.name") }}：</text>
+        <input type="text" v-model="name" class="flex-1 h-80 pr-20 text-lg text-right" :placeholder="$t('collect.p_name')"/>
+      </view>
+      <view class="flex bgwhite items-center bg-my-gray rounded-lg px-20">
+        <text class="text-lg">{{ $t("authentication.zj") }}：</text>
+        <input type="text" v-model="card_id" class="flex-1 h-80 pr-20 text-lg text-right" :placeholder="$t('home.qsrzj')"/>
+      </view>
+      <view class="mt-30 text-lg">{{$t('home.sczjz')}}</view>
+			<view class="mt-20">
+				<view class="w-full rounded-8 text-center py-20" @tap="uploadImg(1)">
+					<view v-if="!hasUp1">
+						<image :src="img" class="w-160 h-160"></image>
+						<view class="mt-20 text-center">{{$t('home.zjzm')}}</view>
+					</view>
+					<image :src="img1" class="w-full h-400" mode="widthFix" v-else></image>
+				</view>
+				<view class="w-full rounded-8 text-center py-20" @tap="uploadImg(2)">
+					<view v-if="!hasUp2">
+						<image :src="img" class="w-160 h-160" ></image>
+						<view class="mt10 text-center">{{$t('home.zjfm')}}</view>
+					</view>
+					<image :src="img2" class="w-full h-400" mode="widthFix" v-else></image>
+				</view>
+                <view class="w-full rounded-8 text-center py-20" @tap="uploadImg(3)">
+					<view class="" v-if="!hasUp3">
+						<image :src="img" class="w-160 h-160" ></image>
+						<view class="mt10 text-center">{{$t('home.sczj')}}</view>
+					</view>
+					<image :src="img3" class="w95" mode="widthFix" v-else style="max-height: 100px;"></image>
+				</view>
+
+			</view>
+		<view class="mt-40 h-80 flex justify-center items-center text-center bg-my-orange text-white text-xl rounded-10" @tap="confirm">{{ $t("login.e_confrim") }}</view>
+		<view class="mt20 mb10">{{$t('home.rzts')}}</view>
+		<view class="mt5">{{$t('home.rz1')}}</view>
+		<view class="mt5">{{$t('home.rz2')}}</view>
+		<view class="mt5">{{$t('home.rz3')}}</view>
+		<view class="mt5">{{$t('home.rz4')}}</view>
+		<view class="mt5">{{$t('home.rz5')}}</view>
+		<view class="mt5 pb50">{{$t('home.rz6')}}</view>
+	</view>
+    <view class=" text-2xl text-center pt-200" v-else-if="authStatus == 1">
+      {{ $t("authentication.ing") }}
+    </view>
+    <view class="text-2xl text-center pt-200" v-else-if="authStatus == 2">
+      {{ $t("authentication.has") }}
+    </view>
+  </view>
+</template>
+
+<script>
+	import {domain} from '@/common/domain.js'
+	import {mapState} from 'vuex'
+	export default{
+		data(){
+			return{
+				name:'',
+				card_id:'',
+				img:'/static/image/addImg.png',
+				hasUp1:false,
+				hasUp2:false,
+				hasUp3:false,
+				img1:'',
+				img2:'',
+				img3:'',
+				authStatus: 0,
+				index1:'',
+				accountList1:[
+					{
+						id:1,
+						name:this.$t('home.sfz')
+					},
+					{
+						id:2,
+						name:this.$t('home.hz')
+					},
+					{
+						id:3,
+						name:this.$t('home.jsz')
+					}
+				]
+			}
+		},
+		onLoad() {
+			this.init();
+			uni.setNavigationBarTitle({
+				title:this.$t('authentication').renzheng
+			})
+		},
+		computed:{
+		   ...mapState(['theme']),
+		},
+		onShow() {
+			this.init();
+		    this.$utils.setThemeTop(this.theme);
+		},
+		methods:{
+			bindPickerChange1(e){
+				this.index1 = e.detail.value 
+			},
+			init(){
+				var that = this;
+				that.$utils.initDataToken({url:'user_real/center'},(res,msg)=>{
+					that.authStatus = res.review_status;
+				})
+			},
+			uploadImg(i){
+				var that=this;
+				uni.chooseImage({
+					count: 1,
+					sizeType: ['compressed'],
+					success: (chooseImageRes) => {
+						// this.ossFileUpload(chooseImageRes.tempFiles[0],res=>{
+						// 			var img='img'+i;
+						// 			var hsup='hasUp'+i;
+								
+						// 			that[img]=res.url;
+						// 			that[hsup]=true;
+											
+						// })
+						const tempFilePaths = chooseImageRes.tempFilePaths;
+						uni.uploadFile({
+							url: domain+'/api/common/image_upload', //仅为示例，非真实的接口地址
+							// #ifdef APP-PLUS
+							url:domain+'/api/common/image_upload',
+							// #endif
+							filePath: tempFilePaths[0],
+							name: 'file',
+							formData: {
+								'user': 'test'
+							},
+							success: (uploadFileRes) => {
+								console.log(typeof uploadFileRes.data);
+								var data=JSON.parse(uploadFileRes.data);
+								if(data.code==1){
+									var img='img'+i;
+									var hsup='hasUp'+i;
+									console.log(data)
+									that[img]=data.data.url;
+									that[hsup]=true;
+								}
+							}
+						});
+					}
+				});
+			},
+			confirm(){
+				if(!this.name){
+					return this.$utils.showLayer(this.$t('collect.p_name'))
+				}
+				if(!this.card_id){
+					return this.$utils.showLayer(this.$t('collect.p_cardno'))
+				}
+				if(!this.img1){
+					return this.$utils.showLayer(this.$t('collect.up_cardz'))
+				}
+				if(!this.img2){
+					return this.$utils.showLayer(this.$t('collect.up_cardf'))
+				}
+				// if(!this.img3){
+				// 	return this.$utils.showLayer(this.$t('collect.up_cardhand'))
+				// }
+				this.$utils.initDataToken({url:'user_real/real_name',type:'POST',data:{
+					name:this.name,
+					card_id:this.card_id,
+					front_pic:this.img1,
+					reverse_pic:this.img2,
+					type:this.accountList1[this.index1].id,
+					hand_pic:this.img3
+					
+				}},(res,msg)=>{
+					this.$utils.showLayer(msg);
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1
+						})
+					},1500)
+				})
+			}
+		}
+	}
+</script>

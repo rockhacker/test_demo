@@ -1,0 +1,13 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic/20/security">
+<mask id="mask0_141_976" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+<rect id="Rectangle 155" width="20" height="20" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_141_976)">
+<g id="Group 75">
+<path id="Rectangle 152" d="M2.91949 6.20645C2.9641 5.46321 3.42898 4.81615 4.11336 4.52284L6.5 3.5L9.21216 2.33765C9.71525 2.12203 10.2847 2.12203 10.7878 2.33764L13.5 3.5L15.8866 4.52284C16.571 4.81615 17.0359 5.46321 17.0805 6.20645C17.1977 8.15993 17.3643 11.9071 17 13C16.6192 14.1425 12.7578 16.4451 10.9386 17.4779C10.354 17.8099 9.64603 17.8099 9.06137 17.4779C7.24221 16.4451 3.38081 14.1425 2.99999 13C2.63569 11.9071 2.80225 8.15993 2.91949 6.20645Z" stroke="#E8EDF4" stroke-width="1.6"/>
+<path id="Vector 13" d="M6.5 9.77778L9.3 12L13.5 8" stroke="#E8EDF4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</svg>

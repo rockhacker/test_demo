@@ -1,0 +1,18 @@
+{
+    "id": "xlbsh-swiper",
+    "name": "图片轮播图，banner轮播图",
+    "version": "1.0.1",
+    "description": "轮播图组件",
+    "keywords": [
+        "轮播图，swiper，轮播图组件，Carousel走马灯"
+    ],
+    "dcloudext": {
+        "category": [
+            "前端组件",
+            "通用组件"
+        ]
+    },
+    "dependencies": {
+        "ali-oss": "^6.20.0"
+    }
+}
